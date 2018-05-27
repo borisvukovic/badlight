@@ -1,0 +1,25 @@
+<BeaconSymbol>:
+    size_hint_x: None
+    size_hint_y: None
+    size: (40, 40)
+    canvas:
+        Color:
+            rgba: (0, 0, 0, 1)
+        Ellipse:
+            size: (40, 40)
+            pos: (0, 0)
+        Color:
+            rgba: self.color
+        Ellipse:
+            size: (30, 30)
+            pos: (5, 5)
+        Color:
+            rgba: (0, 0, 0, 1)
+        Ellipse:
+            size: (24, 24)
+            pos: (8, 8)
+    Label:
+        text: self.text
+        pos: (10, 10)
+        size: (20, 20)
+        color: (1, 1, 1, 1)
