@@ -21,9 +21,7 @@ class Arduino():
         self.baudrate = 9600
         self.com = self._find_comport()
         self.ser = serial.Serial(self.com, self.baudrate, timeout=0)
-        while True:
-            self.monitor()
-        self.connect_wait()
+        self.connect()
         print('connected')
 
     def __exit__(self, type, value, traceback):

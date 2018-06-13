@@ -1,0 +1,138 @@
+#:import re re
+
+<MainBoxLayout>:
+    color:
+    orientation: 'horizontal'
+    BoxLayout:
+        orientation: 'vertical'
+
+        SelectLightsBox:
+
+        TrainingSettingsBox:
+
+        StartTrainingBox:
+    BadmintonCourtBox:
+
+<SelectLightsBox>:
+    orientation: 'vertical'
+    ColorLabel:
+        bcolor: (0, 0.58, 0.53, 1)
+        text: 'Trainings Optionen'
+        markup: True
+        bold: True
+    BoxLayout:
+        orientation: 'vertical'
+
+        StateButton:
+            text: 'Modul A'
+            module: 'A'
+            on_release: root.callback(self)
+
+        StateButton:
+            text: 'Modul B'
+            module: 'B'
+
+        StateButton:
+            text: 'Modul C'
+            module: 'C'
+
+        StateButton:
+            text: 'Modul D'
+            module: 'D'
+
+        StateButton:
+            text: 'Modul E'
+            module: 'E'
+
+        StateButton:
+            text: 'Modul F'
+            module: 'F'
+
+<TrainingSettingsBox>:
+    orientation: 'vertical'
+    ColorLabel:
+        bcolor: (0, 0.58, 0.53, 1)
+        text: 'Trainings Optionen'
+        markup: True
+        bold: True
+    GridLayout:
+        cols: 2
+        orientation: 'vertical'
+        Label:
+            text: 'Name:'
+        NameInput:
+
+        Label:
+            text: 'Trainingszeit (s):'
+        PosFloatInput:
+
+        Label:
+            text: 'Anzahl Wiederholungen:'
+        PosIntInput:
+
+        Label:
+            text: 'Intervall-Zeit (s):'
+        PosFloatInput:
+
+<StartTrainingBox>:
+    orientation: 'vertical'
+    ColorLabel:
+        bcolor: (0, 0.58, 0.53, 1)
+        text: 'Trainings Optionen'
+        markup: True
+        bold: True
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'Training Starten'
+        Button:
+            text: 'Stopp'
+
+<BadmintonCourtBox>:
+    size: (720, 710)
+    size_hint_x: None
+    size_hint_y: None
+    Image:
+        source: 'img/badminton_court.png'
+        height: 720
+        width: 710
+        size_hint_x: None
+        size_hint_y: None
+        allow_stretch: False
+        keep_ratio: True
+
+<StateButton>:
+    active: False
+
+<ColorLabel>
+    bcolor: (0, 0, 0, 1)
+    canvas.before:
+        Color:
+            rgba: self.bcolor
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<NameInput>
+    multiline: False
+    pat: re.compile('[^A-Za-z0-9 _]')
+
+<PosFloatInput>
+    multiline: False
+    pat: re.compile('[^0-9]')
+
+<PosIntInput>
+    multiline: False
+    pat: re.compile('[^0-9]')
+
+
+<StartTrainingBox>:
+
+<BadmintonCourtBox>:
+
+
+
+
+
+
+

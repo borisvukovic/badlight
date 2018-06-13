@@ -1,0 +1,46 @@
+<MainBoxLayout>
+    orientation: 'horizontal'
+
+    BoxLayout:
+        orientation: 'vertical'
+        CheckBoxButton:
+            text: 'Hello'
+            on_press: display.set_text(self)
+        CheckBoxButton:
+            text: 'Bye'
+            on_press: display.set_text(self)
+        CheckBoxButton:
+            text: 'Nice'
+            on_press: display.set_text(self)
+        CheckBoxButton:
+            text: 'Damn'
+            on_release: display.set_text(self)
+
+    DisplayLabel:
+        id: display
+        text: ''
+
+    BoxLayout:
+        Beacon:
+
+<DisplayLabel>:
+    text: ''
+    current_button: None
+
+<CheckBoxButton>:
+    background_color: (0, 1, 0, 1)
+    text: ''
+
+<Beacon>:
+    canvas:
+        Color:
+            rgba: (1, 0, 0, 1)
+        Rectangle:
+            size: (50, 50)
+
+    on_dro
+
+
+
+
+
