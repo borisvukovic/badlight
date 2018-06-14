@@ -1,52 +1,106 @@
 #:import re re
 
 <MainBoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     color:
     orientation: 'horizontal'
     BoxLayout:
         orientation: 'vertical'
 
-        SelectLightsBox:
+        # Selecting Modules
+        BoxLayout:
+            orientation: 'vertical'
+            ColorLabel:
+                bcolor: (0, 0.58, 0.53, 1)
+                text: 'Trainings Optionen'
+                markup: True
+                bold: True
+            BoxLayout:
+                orientation: 'vertical'
+                StateButton:
+                    text: 'Modul A'
+                    module: 'A'
+                    on_release: root.callback_module_select(self, beacon_A)
+                StateButton:
+                    text: 'Modul B'
+                    module: 'B'
+                    on_release: root.callback_module_select(self, beacon_B)
+                StateButton:
+                    text: 'Modul C'
+                    module: 'C'
+                    on_release: root.callback_module_select(self, beacon_C)
+                StateButton:
+                    text: 'Modul D'
+                    module: 'D'
+                    on_release: root.callback_module_select(self, beacon_D)
+                StateButton:
+                    text: 'Modul E'
+                    module: 'E'
+                    on_release: root.callback_module_select(self, beacon_E)
+                StateButton:
+                    text: 'Modul F'
+                    module: 'F'
+                    on_release: root.callback_module_select(self, beacon_F)
 
+        # TrainingSettingsBox
         TrainingSettingsBox:
 
         StartTrainingBox:
+
     BadmintonCourtBox:
-
-<SelectLightsBox>:
-    orientation: 'vertical'
-    ColorLabel:
-        bcolor: (0, 0.58, 0.53, 1)
-        text: 'Trainings Optionen'
-        markup: True
-        bold: True
-    BoxLayout:
-        orientation: 'vertical'
-
-        StateButton:
-            text: 'Modul A'
-            module: 'A'
-            on_release: root.callback(self)
-
-        StateButton:
-            text: 'Modul B'
-            module: 'B'
-
-        StateButton:
-            text: 'Modul C'
-            module: 'C'
-
-        StateButton:
-            text: 'Modul D'
-            module: 'D'
-
-        StateButton:
-            text: 'Modul E'
-            module: 'E'
-
-        StateButton:
-            text: 'Modul F'
-            module: 'F'
+        Beacon:
+            id: beacon_A
+            pos: (50, 50)
+            max_pos: (670, 680)
+            min_pos: (0, 0)
+            id_text: 'A'
+            alpha: 1
+            id_color: (1, 0, 0)
+        Beacon:
+            id: beacon_B
+            pos: (620, 50)
+            max_pos: (670, 680)
+            min_pos: (0, 0)
+            id_text: 'B'
+            alpha: 1
+            id_color: (0, 1, 0)
+        Beacon:
+            id: beacon_C
+            center: (70, 370)
+            max_pos: (670, 680)
+            min_pos: (0, 0)
+            id_text: 'C'
+            alpha: 1
+            id_color: (0, 0, 1)
+        Beacon:
+            id: beacon_D
+            center: (640, 370)
+            max_pos: (670, 680)
+            min_pos: (0, 0)
+            id_text: 'D'
+            alpha: 1
+            id_color: (1, 1, 0)
+        Beacon:
+            id: beacon_E
+            pos: (50, 630)
+            max_pos: (670, 680)
+            min_pos: (0, 0)
+            id_text: 'E'
+            alpha: 1
+            id_color: (1, 0, 1)
+        Beacon:
+            id: beacon_F
+            pos: (620, 630)
+            max_pos: (670, 680)
+            min_pos: (0, 0)
+            id_text: 'F'
+            alpha: 1
+            id_color: (0, 1, 1)
 
 <TrainingSettingsBox>:
     orientation: 'vertical'
@@ -71,7 +125,7 @@
         PosIntInput:
 
         Label:
-            text: 'Intervall-Zeit (s):'
+            text: 'Intervallzeit (s):'
         PosFloatInput:
 
 <StartTrainingBox>:
@@ -89,7 +143,7 @@
             text: 'Stopp'
 
 <BadmintonCourtBox>:
-    size: (720, 710)
+    size: (710, 720)
     size_hint_x: None
     size_hint_y: None
     Image:
@@ -102,7 +156,10 @@
         keep_ratio: True
 
 <StateButton>:
-    active: False
+    active: True
+    color_deactive: (0.3, 0.3, 0.3, 1)
+    color_active: (0, 1, 1, 1)
+    background_color: self.color_active
 
 <ColorLabel>
     bcolor: (0, 0, 0, 1)
@@ -128,7 +185,39 @@
 
 <StartTrainingBox>:
 
-<BadmintonCourtBox>:
+<Beacon>:
+    max_pos: (0, 0)
+    min_pos: (0, 0)
+    id_text: ''
+    alpha: 1
+    id_color: (1, 1, 1)
+    size_hint_x: None
+    size_hint_y: None
+    size: (40, 40)
+    canvas:
+        Color:
+            rgb: (0, 0, 0)
+            a: self.alpha
+        Ellipse:
+            size: (40, 40)
+            pos: (0, 0)
+        Color:
+            a: self.alpha
+            rgb: self.id_color
+        Ellipse:
+            size: (30, 30)
+            pos: (5, 5)
+        Color:
+            rgb: (0, 0, 0)
+            a: self.alpha
+        Ellipse:
+            size: (24, 24)
+            pos: (8, 8)
+    Label:
+        text: root.id_text
+        pos: (10, 10)
+        size: (20, 20)
+        opacity: root.alpha
 
 
 

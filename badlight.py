@@ -4,24 +4,29 @@ from kivy.uix.button import Button
 from kivy.uix.scatter import Scatter
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
+from kivy.uix.relativelayout import RelativeLayout
 import re
 
 class BadLightApp(App):
     def build(self):
         return MainBoxLayout()
 
-class MainBoxLayout(BoxLayout):
-    pass
 
-class SelectLightsBox(BoxLayout):
-    def callback(self, statebutton):
+
+class MainBoxLayout(BoxLayout):
+    def callback_module_select(self, statebutton, beacon):
         """
         Handels what happens, when a button is pressed
         :param statebutton: reference to the pressed button
         :return:
         """
-        statebutton.flip_state()
-    pass
+        if statebutton.active:
+            statebutton.deactivate()
+            beacon.hide()
+        else:
+            statebutton.activate()
+            beacon.show()
+
 
 class TrainingSettingsBox(BoxLayout):
     pass
@@ -29,26 +34,49 @@ class TrainingSettingsBox(BoxLayout):
 class StartTrainingBox(BoxLayout):
     pass
 
-class BadmintonCourtBox(BoxLayout):
+class BadmintonCourtBox(RelativeLayout):
     pass
 
 class Beacon(Scatter):
-    pass
+    def on_touch_move(self, touch):
+        super(Beacon, self).on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        super(Beacon, self).on_touch_up(touch)
+        # keep position in range
+        x = round(self.truncate_position(self.pos[0], self.max_pos[0], self.min_pos[0]), -1)
+        y = round(self.truncate_position(self.pos[1], self.max_pos[1], self.min_pos[1]), -1)
+        self.pos = (x, y)
+
+    def hide(self):
+        self.alpha = 0
+
+    def show(self):
+        self.alpha = 1
+
+    @staticmethod
+    def truncate_position(pos, max_pos, min_pos):
+        """
+         Returns the position which is still on the court
+        :return: position
+        """
+        if pos < min_pos:
+            return min_pos
+        elif pos > max_pos:
+            return max_pos
+        else:
+            return pos
 
 class StateButton(Button):
-    def flip_state(self):
-        if self.active:
-            self.deactivate()
-        else:
-            self.activate()
-
     def activate(self):
         self.active = True
         self.set_state(0)
+        self.background_color = self.color_active
 
     def deactivate(self):
         self.active = False
         self.set_state(0)
+        self.background_color = self.color_deactive
 
     def set_state(self, state):
         """
@@ -57,7 +85,6 @@ class StateButton(Button):
         :return:
         """
         pass
-    pass
 
 class ColorLabel(Label):
     pass
