@@ -5,7 +5,12 @@ from kivy.uix.scatter import Scatter
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.core.window import Window
+from kivy.uix.popup import Popup
+
 import re
+import numpy as np
+import time
 
 class BadLightApp(App):
     def build(self):
@@ -22,10 +27,57 @@ class MainBoxLayout(BoxLayout):
         """
         if statebutton.active:
             statebutton.deactivate()
-            beacon.hide()
+            beacon.dont_use_beacon()
         else:
             statebutton.activate()
-            beacon.show()
+            beacon.use_beacon()
+
+    def callback_start_training(self):
+        """
+        Starts a training session when button is pressed
+        :return:
+        """
+        if not self.check_values():
+            return
+
+    def check_values(self):
+        """
+        Checks that all entered values are valid
+        :return: True when valide
+        """
+        # At least one beacon has to be selected
+        if all(beacon.used == False for beacon in self.beacon_list):
+            msg = 'Es muss mindestens ein Modul ausgwählt sein.'
+            self._popup_msg('Warnung', msg)
+            return False
+        # Fill in name
+        elif not self.ids['subject_name'].text:
+            msg = 'Bitte einen Namen eingeben.'
+            self._popup_msg('Warnung', msg)
+            return False
+        # Fill in training_time or number_of_repetitions
+        elif self.ids['number_of_repetitions'].text == '' and self.ids['time_of_training'].text == '':
+            msg = 'Bitte Trainingszeit oder Anzahl Wiederholungen ausfüllen.'
+            self._popup_msg('Warnung', msg)
+            return False
+        elif not self.ids['interval_time'].text:
+            msg = 'Bitte Intervallzeit ausfüllen.'
+            self._popup_msg('Warnung', msg)
+            return False
+        else:
+            return True
+
+
+
+
+
+
+    @staticmethod
+    def _popup_msg(title, msg):
+        popup = Popup(title=title,
+                      content=Label(text=msg),
+                      size_hint=(None, None), size=(450, 200))
+        popup.open()
 
 
 class TrainingSettingsBox(BoxLayout):
@@ -48,10 +100,12 @@ class Beacon(Scatter):
         y = round(self.truncate_position(self.pos[1], self.max_pos[1], self.min_pos[1]), -1)
         self.pos = (x, y)
 
-    def hide(self):
+    def dont_use_beacon(self):
+        self.used = False
         self.alpha = 0
 
-    def show(self):
+    def use_beacon(self):
+        self.used = True
         self.alpha = 1
 
     @staticmethod
@@ -66,6 +120,35 @@ class Beacon(Scatter):
             return max_pos
         else:
             return pos
+
+    def get_distance(self, beacon2):
+        (x2, y2) = beacon2.pos
+        return np.sqrt((x2-self.pos[0])**2 + (y2-self.pos[1])**2)
+
+    def initialize(self):
+        address = self.addresses[self.id]
+
+
+
+    def activate(self):
+        """
+        Sets status to active and starts a timer
+        :return:
+        """
+        if self.status == 'active':
+            raise ValueError('This Beacon is already activated!')
+        self.status = 'active'
+        self.time_since_activate = time.time()
+
+    def deactivate(self):
+        """
+        Sets status to idle and returns the time the beacon has been active
+        :return: time in ms
+        """
+        if self.status == 'idle':
+            raise ValueError('You cannot deactivate a Beacon twice!')
+        self.status = 'idle'
+        return time.time() - self.time_since_activate
 
 class StateButton(Button):
     def activate(self):

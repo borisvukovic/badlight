@@ -34,8 +34,23 @@ class Arduino():
 
         raise IOError('Could not connect to device')
 
+    def activate_light(self, light_number):
+        try:
+            self.ser.write('a{beacon_number}'.format(beacon_number=light_number))
+        except:
+            pass
 
+    def init_light(self, light_number):
+        try:
+            self.ser.write('i{beacon_number}'.format(beacon_number=light_number))
+        except:
+            pass
 
+    def get_state(self, number_of_tries):
+        for tryn in range(0, number_of_tries):
+            state = self.ser.readline()
+
+    def check_state(self):
     def monitor(self):
         light_status = self.ser.readline()
         print(light_status)

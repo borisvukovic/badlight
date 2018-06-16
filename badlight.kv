@@ -9,6 +9,7 @@
             size: self.size
     color:
     orientation: 'horizontal'
+    beacon_list: [beacon_A, beacon_B, beacon_C, beacon_D, beacon_E, beacon_F]
     BoxLayout:
         orientation: 'vertical'
 
@@ -48,9 +49,55 @@
                     on_release: root.callback_module_select(self, beacon_F)
 
         # TrainingSettingsBox
-        TrainingSettingsBox:
+        BoxLayout:
+            orientation: 'vertical'
+            ColorLabel:
+                bcolor: (0, 0.58, 0.53, 1)
+                text: 'Trainings Optionen'
+                markup: True
+                bold: True
+            GridLayout:
+                cols: 2
+                orientation: 'vertical'
+                Label:
+                    text: 'Name:'
+                NameInput:
+                    id: subject_name
 
-        StartTrainingBox:
+                Label:
+                    text: 'Trainingszeit (s):'
+                PosFloatInput:
+                    id: time_of_training
+                    on_text: if not self.text == '': number_of_repetitions.text = ''
+
+                Label:
+                    text: 'Anzahl Wiederholungen:'
+                PosIntInput:
+                    id: number_of_repetitions
+                    on_text: if not self.text == '': time_of_training.text = ''
+
+                Label:
+                    text: 'Intervallzeit (s):'
+                PosFloatInput:
+                    id: interval_time
+
+
+        # StartTrainingBox
+        BoxLayout
+            orientation: 'vertical'
+            ColorLabel:
+                bcolor: (0, 0.58, 0.53, 1)
+                text: 'Trainings Optionen'
+                markup: True
+                bold: True
+            BoxLayout:
+                orientation: 'vertical'
+                Button:
+                    text: 'Training Starten'
+                    on_release: root.callback_start_training()
+                Button:
+                    text: 'Stopp'
+                    on_release: root.callback_stop_training()
 
     BadmintonCourtBox:
         Beacon:
@@ -182,18 +229,20 @@
     multiline: False
     pat: re.compile('[^0-9]')
 
-
-<StartTrainingBox>:
-
 <Beacon>:
     max_pos: (0, 0)
     min_pos: (0, 0)
     id_text: ''
     alpha: 1
+    used: True
+    state: 'not_init'
+    addresses: {'beacon_A': 0, 'beacon_B': 0, 'beacon_C': 0, 'beacon_D': 0, 'beacon_E': 0, 'beacon_F': 0}
+    error: (False, '')
     id_color: (1, 1, 1)
     size_hint_x: None
     size_hint_y: None
     size: (40, 40)
+
     canvas:
         Color:
             rgb: (0, 0, 0)
