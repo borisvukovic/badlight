@@ -39,6 +39,8 @@ class MainBoxLayout(BoxLayout):
         """
         if not self.check_values():
             return
+        
+
 
     def check_values(self):
         """
